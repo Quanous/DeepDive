@@ -8,5 +8,5 @@ tools/globalTypes.d.luau
 .DS_Store
 
 # user-supplied BGM is installed locally, never committed
-HL/media/
+DL/media/
 android/hl.p12

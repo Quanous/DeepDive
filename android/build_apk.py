@@ -10,7 +10,7 @@ from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 TOOLS = os.path.abspath(sys.argv[1]); WORK = os.path.abspath(sys.argv[2])
-OUT = os.path.join(ROOT, 'HL', 'HL.apk')
+OUT = os.path.join(ROOT, 'DL', 'DL.apk')
 KS = os.path.join(HERE, 'hl.p12'); KSPASS = 'hlplanner'
 AAPT2 = os.path.join(TOOLS, 'x/prebuilt/linux/aapt2')
 FRAMEWORK = os.path.join(TOOLS, 'x/prebuilt/android-framework.jar')
@@ -24,12 +24,12 @@ def run(*cmd, **kw):
 shutil.rmtree(WORK, ignore_errors=True)
 for d in ('res', 'compiled', 'classes', 'assets'): os.makedirs(os.path.join(WORK, d))
 # ---- icons
-ico = Image.open(os.path.join(ROOT, 'HL', 'HL.ico'))
+ico = Image.open(os.path.join(ROOT, 'DL', 'DL.ico'))
 big = ico.ico.getimage((256, 256)).convert('RGBA')
 for name, px in (('mdpi', 48), ('hdpi', 72), ('xhdpi', 96), ('xxhdpi', 144), ('xxxhdpi', 192)):
     d = os.path.join(WORK, 'res', 'mipmap-' + name); os.makedirs(d)
     big.resize((px, px), Image.LANCZOS).save(os.path.join(d, 'ic_launcher.png'))
-shutil.copy(os.path.join(ROOT, 'HL', 'HL.html'), os.path.join(WORK, 'assets', 'HL.html'))
+shutil.copy(os.path.join(ROOT, 'DL', 'DL.html'), os.path.join(WORK, 'assets', 'HL.html'))
 # ---- resources + manifest
 run(AAPT2, 'compile', '--dir', os.path.join(WORK, 'res'), '-o', os.path.join(WORK, 'compiled'))
 flats = [os.path.join(WORK, 'compiled', f) for f in os.listdir(os.path.join(WORK, 'compiled'))]

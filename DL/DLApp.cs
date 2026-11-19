@@ -18,7 +18,7 @@ static class Program
     static void Main()
     {
         bool created;
-        using (Mutex m = new Mutex(true, "HL.HeeseopLife.SingleInstance", out created))
+        using (Mutex m = new Mutex(true, "DL.HeeseopLife.SingleInstance", out created))
         {
             if (!created) return;
             SetProcessDPIAware();
@@ -40,7 +40,7 @@ class DpForm : Form
 
     public DpForm()
     {
-        Text = "HL";
+        Text = "DL";
         Rectangle wa = Screen.PrimaryScreen.WorkingArea;
         ClientSize = new Size(Math.Min(1500, wa.Width * 92 / 100), Math.Min(920, wa.Height * 92 / 100));
         MinimumSize = new Size(900, 600);
@@ -50,8 +50,8 @@ class DpForm : Form
 
         dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Dp");
         Directory.CreateDirectory(dir);
-        html = Path.Combine(dir, "HL.html");
-        using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("HL.html"))
+        html = Path.Combine(dir, "DL.html");
+        using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("DL.html"))
         using (FileStream f = File.Create(html))
         {
             s.CopyTo(f);
@@ -95,7 +95,7 @@ class DpForm : Form
             }
             if (wantFull) SetFull(true);
             else if (StartMax()) WindowState = FormWindowState.Maximized;
-            c.Navigate("https://dp.local/HL.html");
+            c.Navigate("https://dp.local/DL.html");
         }
         catch (Exception)
         {

@@ -1,6 +1,6 @@
 # HL for Android
 
-`HL/HL.apk` is the same single-file planner (`HL/HL.html`) wrapped in a tiny WebView app (`com.heeseop.hl`).
+`DL/DL.apk` is the same single-file planner (`DL/DL.html`) wrapped in a tiny WebView app (`com.heeseop.hl`).
 It works offline, needs no permissions, and keeps its data inside the app.
 
 Rebuild: `python3 android/build_apk.py <tools-dir> <work-dir>` (tools: apktool-cli for aapt2 + framework resources,
