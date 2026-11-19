@@ -1294,13 +1294,21 @@ main{gap:24px}
 .pg .mo .mlow .bb{overflow:hidden}
 .pg .fit .ln{font-size:calc(12px*var(--ls,1));min-height:calc(23px*var(--ls,1));padding-top:calc(3px*var(--ls,1));padding-bottom:calc(2px*var(--ls,1))}
 .pg .mnote .bb .ln span{word-break:break-all}
+
+/* ver 7.1: one small font size across the month sheet */
+.pg .mo .md .it,.pg .mo .md .more,.pg .mo .mw span,.pg .mo .mw .more{font-size:8.5px;line-height:1.3}
+.pg .mo .mw b{font-size:9.5px}
+.pg .mo .mn b{font-size:10.5px}
+.pg .mo .mh{font-size:11px}
+.pg .mo .fit .ln{font-size:calc(8.5px*var(--ls,1));min-height:calc(17px*var(--ls,1));padding-top:calc(2px*var(--ls,1));padding-bottom:calc(1px*var(--ls,1))}
+.pg .mo .bt{font-size:10.5px}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="goo" x="-20%" y="-30%" width="140%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation=".75" result="b"/><feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 14 -5"/></filter></svg>
 <header class="top">
   <div class="lhead">
-    <div class="brand"><span id="logo"></span><div><b>DL</b></div><em class="beta">ver 7.0</em></div>
+    <div class="brand"><span id="logo"></span><div><b>DL</b></div><em class="beta">ver 7.1</em></div>
     <div class="tabs" id="tabs"><button data-v="day" class="on">일간</button><button data-v="week">주간</button><button data-v="month">월간</button><button data-v="year">연간</button></div>
   </div>
   <div class="datenav">
@@ -3181,7 +3189,7 @@ function monthSheet(k,land){
     const its=[];if(wd){wd.goals.forEach(x=>its.push('🎯 '+x.t));wd.tasks.forEach(x=>its.push('· '+x.t))}
     let wh=`<b>${weekLabel(mn)}</b>`;
     its.slice(0,5).forEach(x=>{wh+=`<span>${esc(x)}</span>`});
-    if(its.length>5){notes.push(`${weekLabel(mn)} 계획 — `+its.slice(5).map(x=>x.slice(2).trim()).join(' · '));wh+=`<span class="more">+${its.length-5}개 더 ※${notes.length}</span>`}
+    if(its.length>5){notes.push(`${weekLabel(mn)} 계획 — `+its.slice(5).map(x=>x.slice(2).trim()).join(' · '));wh+=`<span class="more">+${its.length-5}개 더</span>`}
     g+=`<div class="mw">${wh}</div>`;
     for(let i=0;i<7;i++){
       const dt=addDays(mn,i),dk=keyOf(dt),dd=db.days[dk];
@@ -3190,21 +3198,21 @@ function monthSheet(k,land){
       if(dd&&dd.memo){const fl=dd.memo.split('\n').find(x=>x.trim())||'';if(fl)h+=`<span class="it me">📝 ${esc(fl.trim())}</span>`}
       const todos=dd?sortItems(dd.todos):[];
       todos.slice(0,3).forEach(t=>{h+=`<span class="it">• ${esc(t.t)}</span>`});
-      if(todos.length>3){notes.push(`${dt.getDate()}일(${DN[dt.getDay()]}) — `+todos.slice(3).map(t=>t.t).join(' · '));h+=`<span class="more">+${todos.length-3}개 더 ※${notes.length}</span>`}
+      if(todos.length>3){notes.push(`${dt.getDate()}일(${DN[dt.getDay()]}) — `+todos.slice(3).map(t=>t.t).join(' · '));h+=`<span class="more">+${todos.length-3}개 더</span>`}
       g+=h+'</div>';
     }
   }
-  pvMonth={plans:mo?mo.plans:[],notes:notes.map((t,i)=>({t:`※${i+1} ${t}`}))};
+  pvMonth={plans:mo?mo.plans:[],notes:notes.map(t=>({t:'※ '+t}))};
   const low=`<div class="mlow">${pgBox('📌 이달의 계획','','mplan')}${pgBox(notes.length?'📝 메모 · ※ 달력에 다 못 쓴 항목':'📝 메모','','mnote')}</div>`;
   return head+`<div class="pg-b mo ${land?'l':'p'}"><div class="mcal" style="grid-template-rows:auto repeat(${weeks},1fr)">${g}</div>${low}</div>`;
 }
 // fill a box with ruled lines that exactly fit its height (text shrinks a little if entries wrap)
-function fitLines(el,items,base,nb){
+function fitLines(el,items,base,nb,minSc){
   if(!el)return;
   el.classList.add('fit');
   const fits=()=>el.scrollHeight<=el.clientHeight+1;
   let rows=3,ok=false;
-  for(let sc=1;sc>=.75&&!ok;sc-=.05){
+  for(let sc=1;sc>=(minSc||.75)&&!ok;sc-=.05){
     el.style.setProperty('--ls',sc.toFixed(2));
     rows=Math.max(3,Math.floor(el.clientHeight/(base*sc)));
     el.innerHTML=pgLines(items,rows,false,true,nb);
@@ -3236,7 +3244,7 @@ function renderPrint(){
   $('#pvRange').style.display=o.kind==='week'?'':'none';
   pg.style.setProperty('--pz','1');
   if(o.kind==='week')fitWeek(o.land);
-  if(o.kind==='month'){fitLines(pg.querySelector('.mplan .bb'),pvMonth.plans,23,false);fitLines(pg.querySelector('.mnote .bb'),pvMonth.notes,23,true)}
+  if(o.kind==='month'){fitLines(pg.querySelector('.mplan .bb'),pvMonth.plans,17,false,.7);fitLines(pg.querySelector('.mnote .bb'),pvMonth.notes,17,true,.6)}
   $('#pageStyle').textContent=`@page{size:A4 ${o.land?'landscape':'portrait'};margin:0}`;
   fitPrint();
 }
