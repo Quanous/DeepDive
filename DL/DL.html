@@ -1302,13 +1302,16 @@ main{gap:24px}
 .pg .mo .mh{font-size:11px}
 .pg .mo .fit .ln{font-size:calc(8.5px*var(--ls,1));min-height:calc(17px*var(--ls,1));padding-top:calc(2px*var(--ls,1));padding-bottom:calc(1px*var(--ls,1))}
 .pg .mo .bt{font-size:10.5px}
+
+/* ver 7.2: print title = the sheet kind, emphasised (no logo) */
+.pg-t b{font-size:26px;padding:1px 14px 2px;border-width:3px;border-radius:8px;letter-spacing:1px;white-space:nowrap}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="goo" x="-20%" y="-30%" width="140%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation=".75" result="b"/><feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 14 -5"/></filter></svg>
 <header class="top">
   <div class="lhead">
-    <div class="brand"><span id="logo"></span><div><b>DL</b></div><em class="beta">ver 7.1</em></div>
+    <div class="brand"><span id="logo"></span><div><b>DL</b></div><em class="beta">ver 7.2</em></div>
     <div class="tabs" id="tabs"><button data-v="day" class="on">일간</button><button data-v="week">주간</button><button data-v="month">월간</button><button data-v="year">연간</button></div>
   </div>
   <div class="datenav">
@@ -3072,7 +3075,7 @@ function pgLines(arr,n,withP,blank,nb){
 }
 const pgBox=(title,body,extra)=>`<div class="bx ${extra||''}"><div class="bt">${title}</div><div class="bb">${body}</div></div>`;
 function pgHead(kind,main,sub,right){
-  return `<div class="pg-h"><div class="pg-t"><b>DL</b><span>${kind}</span></div><div class="pg-m">${main}<small>${sub||''}</small></div><div class="pg-r">${right||''}</div></div>`;
+  return `<div class="pg-h"><div class="pg-t"><b>${kind}</b></div><div class="pg-m">${main}<small>${sub||''}</small></div><div class="pg-r">${right||''}</div></div>`;
 }
 function ddHtml(keys){
   const a=db.ddays.map(x=>({x,n:ddiff(x.date)})).filter(o=>keys?keys(o.x.date):o.n>=-1).sort((p,q)=>p.x.date<q.x.date?-1:1).slice(0,4);
